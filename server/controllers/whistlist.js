@@ -47,6 +47,12 @@ class whistControllers{
               include: [ User.saldo ]
             }]
         })
+        .then(data=>{
+            res.status(200).json({message:"Successfully delete Wishlist",saldo:data.User.saldo})
+        })
+        .catch(err=>{
+            next(err)
+        })
         
     }
 

@@ -3,17 +3,24 @@ const {User,Whislist} = require('../models');
 const user = require('../models/user');
 
 const auth = (req,res,next)=>{
+    if (!req.headers.access_token) {
+        return next({name:'missing token'})
+    }
     try {
-        if (!req.headers.access_token) {
-             throw {name:"invalid access token"}
-             next()
-        }else{
             const decoded = jwt.verify(req.headers.access_token, process.env.JWT_KEY);
             req.userId = decoded
-            next()
+            User.findByPk(req.userId)
+            .then(data=>{
+                if (!data) {
+                    throw{name:"login failed"}
+                    next()
+                }
+            })
+            .catch(err=>{
+                next(err)
+            })
         }
-        
-    } catch (error) {
+    catch (error) {
         next(error)
     }
 }
