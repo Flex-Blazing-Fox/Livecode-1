@@ -11,6 +11,8 @@ function afterLogin() {
 
   $("#login-container").hide();
   getWishlists();
+  $("#current_saldo").empty();
+  $("#current_saldo").append(localStorage.current_saldo);
 }
 
 function submitLogin(event) {
@@ -29,6 +31,7 @@ function submitLogin(event) {
   })
     .done((data) => {
       localStorage.setItem("access_token", data.access_token);
+      localStorage.setItem("current_saldo", data.saldo);
       afterLogin();
     })
     .fail((err) => console.log(err))

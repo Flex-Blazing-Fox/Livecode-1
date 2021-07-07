@@ -30,7 +30,12 @@ routers.post("/login", (req, res) => {
           id: result.dataValues.id,
         };
         const access_token = jwt.sign(payload, process.env.JWT_SECRET);
-        res.status(200).json({ access_token: access_token });
+        res.status(200).json({
+          id: result.dataValues.id,
+          email: result.dataValues.email,
+          access_token: access_token,
+          saldo: result.dataValues.saldo,
+        });
       }
     })
     .catch((err) => console.log(err));
