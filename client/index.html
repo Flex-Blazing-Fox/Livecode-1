@@ -20,7 +20,7 @@
       <!-- Logout button and notification for success / error event -->
 
       <div id="alert" class="alert alert-dismissible fade" role="alert">
-        Your notification goes here
+        
       </div>
 
       <!-- This is Login Form  -->
@@ -70,13 +70,14 @@
                         <img src="./template/images/balance.jpeg" class="img-thumbnail" alt="...">
                         <div class="card-body">
                         <h5 class="card-title">Current Saldo</h5>
-                        <p class="card-text" id="current_saldo">Rp. 1.000.000</p>
+                        <p class="card-text" id="current_saldo"></p>
                         </div>
                     </div>
               </div>
               <div class="col-8">
                 <!-- This is Wishlists -->
                 <div id="wishlists-container">
+                  <h1 class="bg-dark p-2 rounded-sm text-center text-white">My Wishlists</h1>
                     
                 </div>
               </div>
@@ -88,7 +89,7 @@
       <!-- This is form page to update a comic -->
       <div id="add-container" class="">
         <h1>Add Wishlist</h1>
-        <form class="my-4">
+        <form id="addWishlistForm" class="my-4">
           <div class="form-group">
             <label for="wl-name">Name</label>
             <input id="wl-name" type="text" class="form-control" name="wl-name" placeholder="Wishlist Name" />
