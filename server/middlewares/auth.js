@@ -1,0 +1,1 @@
+const {User, Wishlists} = require('../')
