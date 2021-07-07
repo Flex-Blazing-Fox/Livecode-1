@@ -17,7 +17,10 @@ module.exports = {
       price: {
         type: Sequelize.INTEGER
       },
-      desdescription: {
+      UserId:{
+        type: Sequelize.INTEGER
+      },
+      description: {
         type: Sequelize.STRING
       },
       createdAt: {
