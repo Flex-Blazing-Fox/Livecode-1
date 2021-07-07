@@ -2,12 +2,16 @@ function loginPage() {
   $('#login-container').show()
   $('#home-container').hide()
   $('#add-container').hide()
+  $('#btn-logout').hide()
 }
 
 function homePage() {
   $('#login-container').hide()
   $('#home-container').show()
   $('#add-container').hide()
+  $('#btn-logout').show()
+
+  showCurrentSaldo()
 
   $.ajax({
     url: 'http://localhost:3000/wishlists',
@@ -42,9 +46,9 @@ function homePage() {
     })
 }
 
-function showCurrentSaldo(saldo) {
+function showCurrentSaldo() {
   $('#current_saldo').empty()
-  $('#current_saldo').text(`Rp. ${saldo}`)
+  $('#current_saldo').text(`Rp. ${localStorage.getItem('saldo')}`)
 }
 
 function onDelete(id) {
@@ -53,11 +57,12 @@ function onDelete(id) {
     method: 'DELETE',
     headers: { access_token: localStorage.getItem('access_token') }
   })
-    .done(() => {
+    .done(data => {
+      localStorage.saldo = data.saldo
       homePage()
     })
     .fail(({ responseJSON }) => {
-      showCurrentSaldo()
+      console.log(responseJSON)
     })
 }
 
@@ -73,7 +78,6 @@ function onLoggedIn(e) {
   e.preventDefault()
   const email = $('#email-login').val()
   const password = $('#password-login').val()
-  console.log(email, password)
 
   $.ajax({
     url: 'http://localhost:3000/login',
@@ -82,9 +86,9 @@ function onLoggedIn(e) {
   })
     .done(data => {
       localStorage.setItem('access_token', data.access_token)
+      localStorage.setItem('saldo', data.saldo)
       isLoggedIn()
-
-      $('p#current_saldo').text(`Rp. ${data.saldo}`)
+      showCurrentSaldo()
     })
     .fail(({ responseJSON }) => {
       console.log(responseJSON)
@@ -116,12 +120,26 @@ function addWishlist(e) {
     }
   })
     .done(wishlist => {
-      console.log(wishlist)
+      $('#wl-name').val('')
+      $('#wl-image').val('')
+      $('#wl-price').val('')
+      $('#wl-desc').val('')
       $('#add-container').hide()
+      homePage()
+      let saldo = localStorage.getItem('saldo')
+      saldo = parseInt(saldo)
+      saldo += parseInt(price)
+      localStorage.setItem('saldo',  saldo)
+      showCurrentSaldo()
     })
     .fail(({ responseJSON }) => {
-      $('#alert').text(`${responseJSON.msg}`)
+      $('#alert').append(`<p>${responseJSON.msg}</p>`)
     })
+}
+
+function onLoggedOut() {
+  localStorage.removeItem('access_token')
+  isLoggedIn()
 }
 
 
@@ -136,4 +154,6 @@ $(document).ready(function () {
     e.preventDefault()
     $('#add-container').hide()
   })
+
+  $('#btn-logout').click(onLoggedOut)
 })

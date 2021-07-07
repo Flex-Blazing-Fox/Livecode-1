@@ -62,6 +62,12 @@ router.post('/wishlists', async (req, res) => {
   const UserId = req.user.id
 
   try {
+    const user = await User.findByPk(UserId)
+
+    if (price > user.saldo) {
+      return res.status(400).json({ msg: 'saldo tidak mencukupi' })
+    }
+
     const wishlist = await Wishlists.create({
       name,
       image_url,
@@ -69,13 +75,8 @@ router.post('/wishlists', async (req, res) => {
       UserId,
       description
     })
-    const user = await User.findByPk(UserId)
 
-    if (wishlist.price > user.saldo) {
-      return res.status(400).json({ msg: 'saldo tidak mencukupi' })
-    }
-
-    user.saldo = user.saldo - wishlist.price
+    user.saldo = user.saldo - price
     user.save()
 
     res.status(201).json({
