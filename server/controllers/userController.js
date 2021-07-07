@@ -1,4 +1,4 @@
-const { Users } = require('../models')
+const { User } = require('../models')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -7,7 +7,7 @@ class UserController {
         console.log(req.body);
         const { email, password} = req.body
 
-        Users.create({email,password})
+        User.create({email,password})
         .then(data => {
             res.status(201).json(data);
         })
@@ -19,7 +19,7 @@ class UserController {
     static login(req, res, next){
         const {email, password} = req.body
 
-        Users.findOne({where:{email}})
+        User.findOne({where:{email}})
         .then(result => {
             if(result && bcrypt.compareSync(password, result.password)){
                 const payload = {

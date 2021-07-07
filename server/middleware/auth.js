@@ -1,4 +1,4 @@
-const { Users, Whishlist} = require('../models')
+const { User, Whishlist} = require('../models')
 const jwt = require('jsonwebtoken')
 
 const authentification = (req, res, next) => {
@@ -10,7 +10,7 @@ const authentification = (req, res, next) => {
         let decoded = jwt.verify(req.headers.access_token, process.env.SECRET_KEY)
         req.UserId = decoded.id
         
-        Users.findOne({where:{id:decoded.id}})
+        User.findOne({where:{id:decoded.id}})
         .then(user => {
             if(user){
                 next()
@@ -30,7 +30,7 @@ const authentification = (req, res, next) => {
 const authorization = (req, res, next) => {
     const { id } = req.params
 
-    Whishlist.findAll({where:{id,UserId:req.UserId}})
+    Whishlist.findOne({where:{id,UserId:req.UserId}})
     .then(result => {
         if(result){
             req.whishlist = result
