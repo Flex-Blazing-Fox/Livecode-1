@@ -10,3 +10,12 @@ Content-Type: application/json
     "email": "user1@gmail.com",
     "password": "user1"
 }
+
+### Login
+POST {{host}}/login http/1.1
+Content-Type: application/json
+
+{
+    "email": "user1@gmail.com",
+    "password": "user1"
+}
