@@ -23,8 +23,12 @@ const authoriz = (req,res,next)=>{
     const {id} = req.params
     Whislist.findOne({id:id,userId:userId})
     .then(data=>{
-        req.whist = data
-        next()
+        if (!data) {
+            throw {name:"not found"}
+        }else{
+            req.whist = data
+            next()
+        }
     })
     .catch(err=>{
         next(err)
