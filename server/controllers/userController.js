@@ -9,7 +9,8 @@ class UserController {
 
         User.create({email,password})
         .then(data => {
-            res.status(201).json(data);
+            
+            res.status(201).json({id:data.id,email:data.email,saldo:data.saldo});
         })
         .catch(err => {
             res.status(500).json(err)
@@ -28,7 +29,7 @@ class UserController {
 
                 let access_token = jwt.sign(payload, process.env.SECRET_KEY)
 
-                res.status(200).json({"access_token":access_token})
+                res.status(200).json({"id":result.id,"email":result.email,"access_token":access_token,"saldo":result.saldo})
             }
         })
         .catch(err => {
