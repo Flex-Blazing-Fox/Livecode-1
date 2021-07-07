@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const authenticate = require('../middlewares/authenticate')
+const authorization = require('../middlewares/authorization')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
@@ -90,14 +91,32 @@ router.post('/wishlists', async (req, res) => {
   }
 })
 
-router.get('/wishlists', async (req, res) => {
-  const UserId = req.user.id
+router.get('/wishlists', authorization, async (req, res) => {
   const wishlists = req.wishlists
   
   res.status(200).json(wishlists)
 })
 
-router.delete('/wishlists/:id', async (req, res) => {})
+router.delete('/wishlists/:id', authorization, async (req, res) => {
+  const { id } = req.params
+  const UserId = req.user.id
+  try {
+    const wishlist = await Wishlists.findByPk(id)
+    const user = await User.findByPk(UserId)
+    await Wishlists.destroy({ where: { id }, returning: true })
+    user.saldo = user.saldo + wishlist.price
+    user.save()
+    
+    return res.status(200).json({ 
+      message: 'Successfully delete Wishlist',
+      saldo: user.saldo
+    })
+    
+  } catch (err) {
+    res.status(500).json(err)
+  }
+
+})
 
 
 module.exports = router
