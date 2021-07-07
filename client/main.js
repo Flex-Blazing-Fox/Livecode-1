@@ -2,7 +2,8 @@ function login(event){
     event.preventDefault()
     let email = $('#email-login').val()
     let password = $('password-login').val()
-
+    // console.log(email);
+    // console.log(password);
     $.ajax({
         url:'http://localhost:3000/login',
         method:'POST',
@@ -12,6 +13,7 @@ function login(event){
     })
     .done(result => {
         localStorage.setItem('access_token', result.access_token)
+        afterLogn();
     })
     .fail(err => {
         console.log(err);
@@ -99,16 +101,20 @@ function submitAdd(event){
         }
     })
     .done(() => {
-        let name = $('#wl-name').val('')
-        let image_url = $('#wl-image').val('')
-        let price = $('#wl-price').val('')
-        let description = $('#wl-desc').val('')
+        $('#wl-name').val('')
+        $('#wl-image').val('')
+        $('#wl-price').val('')
+        $('#wl-desc').val('')
 
         afterLogn()
     })
     .fail(err => {
         console.log(err);
     })
+}
+
+function logout(){
+    localStorage.removeItem('access_token')
 }
 
 $(document).ready(function(){
@@ -118,6 +124,7 @@ $(document).ready(function(){
         beforeLogin()
     }
 
-    $('#btn-show-add').click("")
+    $('#btn-logout').click(logout);
+    $('#btn-show-add').click(showForm)
     $('#add-container').submit(submitAdd)
 })
