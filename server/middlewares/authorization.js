@@ -1,4 +1,4 @@
-const Wishlist = require("../models");
+const { Wishlist } = require("../models");
 
 const authorization = (req, res, next) => {
   Wishlist.findAll({
@@ -8,6 +8,7 @@ const authorization = (req, res, next) => {
   })
     .then((result) => {
       req.authorizedWishlists = result;
+      next();
     })
     .catch((err) => next(err));
 };

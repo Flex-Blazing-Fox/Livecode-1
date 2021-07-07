@@ -19,3 +19,25 @@ Content-Type: application/json
     "email": "user1@gmail.com",
     "password": "user1"
 }
+
+### Post Wishlist
+POST {{host}}/wishlists http/1.1
+Content-Type: application/json
+access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjI1NjYyMDY0fQ.ng6ZWC0odktWgZSbw98wLSxt20yfugyvYuGcsN6HY2I
+
+{
+    "name": "Lock n Lock bottle",
+    "image_url":"https://asset.kompas.com/crops/mcMptWeiOQIwUEiY6gV0O_2yaTQ=/0x0:0x0/780x390/data/photo/2014/03/08/0215393a6000-1780x390.jpg",
+    "price": 150000,
+    "description": "kamera untuk jalan2"
+}
+
+### Get Wishlist
+GET {{host}}/wishlists http/1.1
+Content-Type: application/json
+access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjI1NjYyMDY0fQ.ng6ZWC0odktWgZSbw98wLSxt20yfugyvYuGcsN6HY2I
+
+### Delete Wishlist
+DELETE {{host}}/wishlists/2 http/1.1
+Content-Type: application/json
+access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjI1NjYyMDY0fQ.ng6ZWC0odktWgZSbw98wLSxt20yfugyvYuGcsN6HY2I
